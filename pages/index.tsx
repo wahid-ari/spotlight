@@ -1,10 +1,12 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Popover, Transition } from '@headlessui/react';
-import { ChevronDownIcon, GithubIcon, InstagramIcon, LinkedinIcon, TwitterIcon, XIcon } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ChevronDownIcon, GithubIcon, InstagramIcon, LinkedinIcon, MailIcon, TwitterIcon, XIcon } from 'lucide-react';
 
+import { portfolios } from '@/data/portfolio';
 import { cn } from '@/libs/utils';
 
 import ThemeChanger from '@/components/ThemeChanger';
@@ -21,6 +23,23 @@ function Navlink({ href, name }: { href: string; name: string }) {
 }
 
 export default function Home() {
+  let tabs = [
+    { id: 'all', label: 'All' },
+    { id: 'design', label: 'Design' },
+    { id: 'development', label: 'Development' },
+  ];
+  let [activeTab, setActiveTab] = useState(tabs[0].id);
+  const [filteredPortfolios, setFilteredPortfolios] = useState(portfolios);
+  function changeTab(id: string) {
+    if (id != 'all') {
+      let filter = portfolios.filter((portfolios) => portfolios.category.includes(id));
+      setFilteredPortfolios(filter);
+    } else {
+      setFilteredPortfolios(portfolios);
+    }
+    setActiveTab(id);
+  }
+
   return (
     <>
       <Head>
@@ -44,7 +63,15 @@ export default function Home() {
         <meta name='msapplication-TileImage' content='/ms-icon-144x144.png' />
         <link rel='sitemap' type='application/xml' title='Sitemap' href={`/sitemap.xml`} />
       </Head>
-      <div className='bg-neutral-50 dark:bg-black'>
+      <div className='bg-neutral-50 dark:bg-black relative'>
+        <div className='pointer-events-none absolute inset-0 flex justify-center'>
+          <div className='grid h-full w-full max-w-7xl grid-cols-3 gap-3.5 px-4'>
+            <div className='border-x border-neutral-200/50 dark:border-white/5'></div>
+            <div className='border-x border-neutral-200/50 dark:border-white/5'></div>
+            <div className='border-x border-neutral-200/50 dark:border-white/5'></div>
+          </div>
+        </div>
+
         <div className='flex justify-center sm:px-8 md:px-12 lg:px-16'>
           <div className='w-full min-h-screen mx-1.5 max-w-7xl bg-white ring-1 ring-neutral-100 dark:bg-neutral-900 dark:ring-neutral-300/20'>
             <nav className='flex items-center justify-between gap-4 mt-6 px-4 sm:px-16 md:px-20 lg:px-24'>
@@ -63,7 +90,7 @@ export default function Home() {
                 <Navlink href='#speaking' name='Speaking' />
                 <Navlink href='#uses' name='Uses' />
               </div>
-              <div className='flex items-center gap-4'>
+              <div className='flex items-center gap-4 md:gap-0'>
                 <Popover className='relative'>
                   {({ open }) => (
                     <>
@@ -149,9 +176,9 @@ export default function Home() {
               </div>
             </nav>
 
-            <section id='#about' className='px-4 sm:px-16 md:px-20 lg:px-24 mt-32'>
+            <section id='#about' className='z-[1] relative px-4 sm:px-16 md:px-20 lg:px-24 mt-32'>
               <div className='max-w-2xl'>
-                <p className='text-4xl leading-snug sm:leading-snug font-bold tracking-tight text-neutral-800 sm:text-5xl dark:text-neutral-100'>
+                <p className='text-4xl leading-[1.2] sm:leading-[1.15] font-bold tracking-tight text-neutral-800 sm:text-5xl dark:text-neutral-100'>
                   Software designer, founder, and amateur astronaut.
                 </p>
                 <p className='mt-6 text-base text-neutral-600 dark:text-neutral-400'>
@@ -160,17 +187,20 @@ export default function Home() {
                   terms.
                 </p>
                 <div className='mt-6 flex gap-6'>
-                  <a href='#' target='_blank'>
-                    <TwitterIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-200 transition-all duration-150 hover:text-neutral-800' />
+                  <a href='mailto:wahiid.ari@gmail.com' target='_blank'>
+                    <MailIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
                   </a>
-                  <a href='#' target='_blank'>
-                    <InstagramIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-200 transition-all duration-150 hover:text-neutral-800' />
+                  <a href='https://twitter.com/' target='_blank'>
+                    <TwitterIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
                   </a>
-                  <a href='#' target='_blank'>
-                    <GithubIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-200 transition-all duration-150 hover:text-neutral-800' />
+                  <a href='https://www.instagram.com/' target='_blank'>
+                    <InstagramIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
                   </a>
-                  <a href='#' target='_blank'>
-                    <LinkedinIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-neutral-200 transition-all duration-150 hover:text-neutral-800' />
+                  <a href='https://www.github.com/' target='_blank'>
+                    <GithubIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
+                  </a>
+                  <a href='https://linkedin.com/' target='_blank'>
+                    <LinkedinIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
                   </a>
                 </div>
               </div>
@@ -221,6 +251,56 @@ export default function Home() {
               </div>
             </section>
 
+            <section id='#portfolio' className='px-16 mt-32'>
+              <p className='text-2xl text-center mb-8 leading-[1.2] sm:leading-[1.15] font-bold tracking-tight text-neutral-800 sm:text-3xl dark:text-neutral-100'>
+                Portfolio
+              </p>
+              <div className='flex justify-center space-x-2'>
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => changeTab(tab.id)}
+                    className={cn(
+                      activeTab === tab.id
+                        ? '!text-white dark:text-white'
+                        : 'hover:text-neutral-950 dark:hover:text-white',
+                      'relative rounded-full px-3 py-1 text-sm font-medium text-neutral-600 transition-all duration-150 dark:text-neutral-300',
+                    )}
+                    style={{
+                      WebkitTapHighlightColor: 'transparent',
+                    }}
+                  >
+                    {activeTab === tab.id && (
+                      <motion.span
+                        layoutId='bubble'
+                        className='absolute inset-0 z-[1] bg-emerald-500 dark:bg-emerald-500'
+                        style={{ borderRadius: 9999 }}
+                        transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
+                    <span className='z-[2] relative'>{tab.label}</span>
+                  </button>
+                ))}
+              </div>
+              <div className='my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-8'>
+                {filteredPortfolios.map((item, index) => (
+                  <div
+                    key={index}
+                    className='border group rounded-md border-neutral-100 dark:border-neutral-700 shadow-sm mx-0.5'
+                  >
+                    <div className='relative h-64'>
+                      <Image alt={item.name} src={item.images[0]} fill className='object-center' />
+                    </div>
+                    <div className='p-4'>
+                      <p className='font-medium group-hover:text-emerald-500 transition-all duration-150 text-left'>
+                        {item.name}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
             <footer
               className={cn(
                 'flex flex-wrap gap-4 justify-between items-center border-t border-t-neutral-200/50',
@@ -230,36 +310,36 @@ export default function Home() {
               <div className='flex items-center gap-6 mx-auto lg:mx-0'>
                 <Link
                   href='#'
-                  className='text-sm dark:hover:text-emerald-500 hover:text-emerald-500  dark:text-neutral-200 text-neutral-800 font-medium'
+                  className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500  dark:text-neutral-200 text-neutral-800 font-medium'
                 >
                   About
                 </Link>
                 <Link
                   href='#'
-                  className='text-sm dark:hover:text-emerald-500 hover:text-emerald-500  dark:text-neutral-200 text-neutral-800 font-medium'
+                  className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500  dark:text-neutral-200 text-neutral-800 font-medium'
                 >
                   Article
                 </Link>
                 <Link
                   href='#'
-                  className='text-sm dark:hover:text-emerald-500 hover:text-emerald-500  dark:text-neutral-200 text-neutral-800 font-medium'
+                  className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500  dark:text-neutral-200 text-neutral-800 font-medium'
                 >
                   Projects
                 </Link>
                 <Link
                   href='#'
-                  className='text-sm dark:hover:text-emerald-500 hover:text-emerald-500  dark:text-neutral-200 text-neutral-800 font-medium'
+                  className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500  dark:text-neutral-200 text-neutral-800 font-medium'
                 >
                   Speaking
                 </Link>
                 <Link
                   href='#'
-                  className='text-sm dark:hover:text-emerald-500 hover:text-emerald-500  dark:text-neutral-200 text-neutral-800 font-medium'
+                  className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500  dark:text-neutral-200 text-neutral-800 font-medium'
                 >
                   Uses
                 </Link>
               </div>
-              <p className='text-neutral-500 text-sm mx-auto lg:mx-0 lg:text-right text-center'>
+              <p className='text-neutral-500 dark:text-neutral-400 text-sm mx-auto lg:mx-0 lg:text-right text-center'>
                 © 2024 Spencer Sharp. All rights reserved.
               </p>
             </footer>
