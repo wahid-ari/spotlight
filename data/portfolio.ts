@@ -1,3 +1,14 @@
+export type PortfolioType = {
+  name: string;
+  category: string[];
+  description: string;
+  url: string;
+  design: string;
+  stack: string;
+  github: string;
+  images: string[];
+}[];
+
 export const portfolios = [
   {
     name: 'MyVacation',
@@ -7,7 +18,7 @@ export const portfolios = [
     url: 'https://my-vacation.vercel.app',
     design: 'Figma',
     stack: 'HTML, CSS, Typescript, Tailwind, Shadcn/UI, NextJS, Supabase, Vercel',
-    github: 'github.com/wahid-ari',
+    github: 'https://github.com/wahid-ari',
     images: [
       '/portfolio/myvacation/myvacation.png',
       '/portfolio/myvacation/myvacation1.png',
@@ -26,7 +37,7 @@ export const portfolios = [
     url: 'https://my-bookk.vercel.app',
     design: 'Figma',
     stack: 'HTML, CSS, Typescript, Tailwind, NextJS, Supabase, Vercel',
-    github: 'github.com/wahid-ari',
+    github: 'https://github.com/wahid-ari',
     images: [
       '/portfolio/mybook/mybook.png',
       '/portfolio/mybook/mybook1.png',
@@ -46,7 +57,7 @@ export const portfolios = [
     url: 'https://my-moviee.vercel.app',
     design: 'Figma',
     stack: 'HTML, CSS, Javascript, Tailwind, NextJS, Supabase, Vercel',
-    github: 'github.com/wahid-ari',
+    github: 'https://github.com/wahid-ari',
     images: [
       '/portfolio/mymovie/mymovie.png',
       '/portfolio/mymovie/mymovie1.png',
@@ -63,7 +74,7 @@ export const portfolios = [
     url: 'https://my-musicc.vercel.app/',
     design: 'Figma',
     stack: 'HTML, CSS, Typescript, Tailwind, NextJS, Supabase, Vercel',
-    github: 'github.com/wahid-ari',
+    github: 'https://github.com/wahid-ari',
     images: [
       '/portfolio/mymusic/MyMusic.png',
       '/portfolio/mymusic/MyMusic1.png',
@@ -72,25 +83,62 @@ export const portfolios = [
     ],
   },
   {
-    name: 'design',
-    category: ['design'],
-    description:
-      "With MyMusic, it's easy to find the right music for every moment - on your phone, your computer, your tablet and more.",
-    url: 'https://my-musicc.vercel.app/',
+    name: 'MyVacation REST API',
+    category: ['development'],
+    description: 'MyVacation REST API Documentation. Using Next.JS as a frontend framework and Nextra Theme Docs',
+    url: 'https://my-vacation-docs.vercel.app/',
     design: 'Figma',
-    stack: 'HTML, CSS, Typescript, Tailwind, NextJS, Supabase, Vercel',
-    github: 'github.com/wahid-ari',
-    images: [],
+    stack: 'HTML, CSS, Tailwind, NextJS, Nextra',
+    github: 'https://github.com/wahid-ari',
+    images: [
+      '/portfolio/myvacationdocs/myvacationdocs.png',
+      '/portfolio/myvacationdocs/myvacationdocs1.png',
+      '/portfolio/myvacationdocs/myvacationdocs2.png',
+      '/portfolio/myvacationdocs/myvacationdocs3.png',
+    ],
   },
   {
-    name: 'development',
+    name: 'MyBook REST API',
     category: ['development'],
-    description:
-      "With MyMusic, it's easy to find the right music for every moment - on your phone, your computer, your tablet and more.",
-    url: 'https://my-musicc.vercel.app/',
+    description: 'MyBook REST API Documentation. Using Next.JS as a frontend framework and Nextra Theme Docs',
+    url: 'https://my-book-docs.vercel.app/',
     design: 'Figma',
-    stack: 'HTML, CSS, Typescript, Tailwind, NextJS, Supabase, Vercel',
-    github: 'github.com/wahid-ari',
-    images: [],
+    stack: 'HTML, CSS, Tailwind, NextJS, Nextra',
+    github: 'https://github.com/wahid-ari',
+    images: [
+      '/portfolio/mybookdocs/mybookdocs.png',
+      '/portfolio/mybookdocs/mybookdocs1.png',
+      '/portfolio/mybookdocs/mybookdocs2.png',
+      '/portfolio/mybookdocs/mybookdocs3.png',
+    ],
+  },
+  {
+    name: 'MyMovie REST API',
+    category: ['development'],
+    description: 'MyMovie REST API Documentation. Using Next.JS as a frontend framework and Nextra Theme Docs',
+    url: 'https://my-movie-docs.vercel.app/',
+    design: 'Figma',
+    stack: 'HTML, CSS, Tailwind, NextJS, Nextra',
+    github: 'https://github.com/wahid-ari',
+    images: [
+      '/portfolio/mymoviedocs/mymoviedocs.png',
+      '/portfolio/mymoviedocs/mymoviedocs1.png',
+      '/portfolio/mymoviedocs/mymoviedocs2.png',
+      '/portfolio/mymoviedocs/mymoviedocs3.png',
+    ],
+  },
+  {
+    name: 'MyMusic REST API',
+    category: ['development'],
+    description: 'MyMusic REST API Documentation. Using Next.JS as a frontend framework and Nextra Theme Docs',
+    url: 'https://my-music-docs.vercel.app/',
+    design: 'Figma',
+    stack: 'HTML, CSS, Tailwind, NextJS, Nextra',
+    github: 'https://github.com/wahid-ari',
+    images: [
+      '/portfolio/mymusicdocs/MyMusicDocs.png',
+      '/portfolio/mymusicdocs/MyMusicDocs1.png',
+      '/portfolio/mymusicdocs/MyMusicDocs2.png',
+    ],
   },
 ];

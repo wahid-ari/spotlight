@@ -2,13 +2,30 @@ import { Fragment, useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Popover, Transition } from '@headlessui/react';
+import { Dialog, Popover, Transition } from '@headlessui/react';
 import { motion } from 'framer-motion';
-import { ChevronDownIcon, GithubIcon, InstagramIcon, LinkedinIcon, MailIcon, TwitterIcon, XIcon } from 'lucide-react';
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ChevronDownIcon,
+  ExternalLinkIcon,
+  GithubIcon,
+  InstagramIcon,
+  LinkedinIcon,
+  MailIcon,
+  TwitterIcon,
+  XIcon,
+} from 'lucide-react';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 import { portfolios } from '@/data/portfolio';
 import { cn } from '@/libs/utils';
 
+import PortfolioCard from '@/components/PortfolioCard';
 import ThemeChanger from '@/components/ThemeChanger';
 
 function Navlink({ href, name }: { href: string; name: string }) {
@@ -32,13 +49,31 @@ export default function Home() {
   const [filteredPortfolios, setFilteredPortfolios] = useState(portfolios);
   function changeTab(id: string) {
     if (id != 'all') {
-      let filter = portfolios.filter((portfolios) => portfolios.category.includes(id));
+      let filter = portfolios.filter((portfolio) => portfolio.category.includes(id));
       setFilteredPortfolios(filter);
     } else {
       setFilteredPortfolios(portfolios);
     }
     setActiveTab(id);
   }
+  const [openModal, setOpenModal] = useState(false);
+  const [openedPortfolio, setOpenedPortfolio] = useState({
+    name: '',
+    category: [''],
+    description: '',
+    url: '',
+    design: '',
+    stack: '',
+    github: '',
+    images: [''],
+  });
+  function handleOpenPortfolio(name: string) {
+    let filter = portfolios.filter((portfolio) => portfolio.name == name)[0];
+    setOpenedPortfolio(filter);
+    setOpenModal(true);
+  }
+  const [prevEl, setPrevEl] = useState<HTMLElement | null>(null);
+  const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
 
   return (
     <>
@@ -63,25 +98,28 @@ export default function Home() {
         <meta name='msapplication-TileImage' content='/ms-icon-144x144.png' />
         <link rel='sitemap' type='application/xml' title='Sitemap' href={`/sitemap.xml`} />
       </Head>
+
       <div className='bg-neutral-50 dark:bg-black relative'>
         <div className='pointer-events-none absolute inset-0 flex justify-center'>
           <div className='grid h-full w-full max-w-7xl grid-cols-3 gap-3.5 px-4'>
-            <div className='border-x border-neutral-200/50 dark:border-white/5'></div>
-            <div className='border-x border-neutral-200/50 dark:border-white/5'></div>
-            <div className='border-x border-neutral-200/50 dark:border-white/5'></div>
+            <div className='border-x border-neutral-200/50 dark:border-white/10'></div>
+            <div className='border-x border-neutral-200/50 dark:border-white/10'></div>
+            <div className='border-x border-neutral-200/50 dark:border-white/10'></div>
           </div>
         </div>
 
         <div className='flex justify-center sm:px-8 md:px-12 lg:px-16'>
           <div className='w-full min-h-screen mx-1.5 max-w-7xl bg-white ring-1 ring-neutral-100 dark:bg-neutral-900 dark:ring-neutral-300/20'>
-            <nav className='flex items-center justify-between gap-4 mt-6 px-4 sm:px-16 md:px-20 lg:px-24'>
+            <nav className='flex items-center sticky top-6 z-50 justify-between gap-4 mt-6 px-4 sm:px-16 md:px-20 lg:px-24'>
               <Link href='/'>
                 <Image src='/icon.png' alt='logo' width={36} height={36} />
               </Link>
               <div
                 className={cn(
-                  'hidden md:flex items-center gap-6 shadow-lg backdrop-blur transition rounded-full px-6 py-2.5',
-                  'dark:bg-neutral-800/90 bg-white/90 shadow-neutral-800/5 ring-1 ring-neutral-900/5 dark:ring-white/10',
+                  'hidden md:flex items-center gap-6 shadow-lg transition rounded-full px-6 py-2.5',
+                  'shadow-neutral-800/5 ring-1 ring-neutral-900/5 dark:ring-white/10',
+                  'bg-white/50 dark:bg-neutral-900/30',
+                  'backdrop-blur-md backdrop-filter',
                 )}
               >
                 <Navlink href='#about' name='About' />
@@ -106,7 +144,7 @@ export default function Home() {
                           aria-hidden='true'
                         />
                       </Popover.Button>
-                      <Popover.Overlay className='fixed md:hidden inset-0 z-10 bg-neutral-800/40 backdrop-blur-sm dark:bg-black/80' />
+                      <Popover.Overlay className='fixed md:hidden inset-0 z-10 bg-white/50 dark:bg-neutral-900/30 backdrop-blur-md backdrop-filter' />
                       <Transition
                         as={Fragment}
                         enter='transition ease-out duration-200'
@@ -176,30 +214,30 @@ export default function Home() {
               </div>
             </nav>
 
-            <section id='#about' className='z-[1] relative px-4 sm:px-16 md:px-20 lg:px-24 mt-32'>
+            <section id='about' className='z-[1] relative px-4 sm:px-16 md:px-20 lg:px-24 mt-32'>
               <div className='max-w-2xl'>
                 <p className='text-4xl leading-[1.2] sm:leading-[1.15] font-bold tracking-tight text-neutral-800 sm:text-5xl dark:text-neutral-100'>
                   Software designer, founder, and amateur astronaut.
                 </p>
                 <p className='mt-6 text-base text-neutral-600 dark:text-neutral-400'>
-                  I’m Spencer, a software designer and entrepreneur based in New York City. I’m the founder and CEO of
+                  I’m Spotlight, a software designer and entrepreneur based in New York City. I’m the founder and CEO of
                   Planetaria, where we develop technologies that empower regular people to explore space on their own
                   terms.
                 </p>
                 <div className='mt-6 flex gap-6'>
-                  <a href='mailto:wahiid.ari@gmail.com' target='_blank'>
+                  <a href='mailto:wahiid.ari@gmail.com' target='_blank' aria-label='Email'>
                     <MailIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
                   </a>
-                  <a href='https://twitter.com/' target='_blank'>
+                  <a href='https://twitter.com/' target='_blank' aria-label='Twitter'>
                     <TwitterIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
                   </a>
-                  <a href='https://www.instagram.com/' target='_blank'>
+                  <a href='https://www.instagram.com/' target='_blank' aria-label='Instagram'>
                     <InstagramIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
                   </a>
-                  <a href='https://www.github.com/' target='_blank'>
+                  <a href='https://www.github.com/' target='_blank' aria-label='Github'>
                     <GithubIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
                   </a>
-                  <a href='https://linkedin.com/' target='_blank'>
+                  <a href='https://linkedin.com/' target='_blank' aria-label='Linkedin'>
                     <LinkedinIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
                   </a>
                 </div>
@@ -214,6 +252,7 @@ export default function Home() {
                     fill
                     alt='Image'
                     className='absolute inset-0 h-full w-full object-cover'
+                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                   />
                 </div>
                 <div className='relative aspect-[9/10] w-44 flex-none overflow-hidden rounded-xl bg-neutral-100 sm:w-72 sm:rounded-2xl dark:bg-neutral-800 -rotate-2'>
@@ -222,6 +261,7 @@ export default function Home() {
                     fill
                     alt='Image'
                     className='absolute inset-0 h-full w-full object-cover'
+                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                   />
                 </div>
                 <div className='relative aspect-[9/10] w-44 flex-none overflow-hidden rounded-xl bg-neutral-100 sm:w-72 sm:rounded-2xl dark:bg-neutral-800'>
@@ -230,6 +270,7 @@ export default function Home() {
                     fill
                     alt='Image'
                     className='absolute inset-0 h-full w-full object-cover'
+                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                   />
                 </div>
                 <div className='relative aspect-[9/10] w-44 flex-none overflow-hidden rounded-xl bg-neutral-100 sm:w-72 sm:rounded-2xl dark:bg-neutral-800 rotate-2'>
@@ -238,6 +279,7 @@ export default function Home() {
                     fill
                     alt='Image'
                     className='absolute inset-0 h-full w-full object-cover'
+                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                   />
                 </div>
                 <div className='relative aspect-[9/10] w-44 flex-none overflow-hidden rounded-xl bg-neutral-100 sm:w-72 sm:rounded-2xl dark:bg-neutral-800 -rotate-2'>
@@ -246,14 +288,15 @@ export default function Home() {
                     fill
                     alt='Image'
                     className='absolute inset-0 h-full w-full object-cover'
+                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                   />
                 </div>
               </div>
             </section>
 
-            <section id='#portfolio' className='px-16 mt-32'>
+            <section id='projects' className='px-6 sm:px-8 md:px-12 lg:px-16 mt-32'>
               <p className='text-2xl text-center mb-8 leading-[1.2] sm:leading-[1.15] font-bold tracking-tight text-neutral-800 sm:text-3xl dark:text-neutral-100'>
-                Portfolio
+                Projects
               </p>
               <div className='flex justify-center space-x-2'>
                 {tabs.map((tab) => (
@@ -264,7 +307,7 @@ export default function Home() {
                       activeTab === tab.id
                         ? '!text-white dark:text-white'
                         : 'hover:text-neutral-950 dark:hover:text-white',
-                      'relative rounded-full px-3 py-1 text-sm font-medium text-neutral-600 transition-all duration-150 dark:text-neutral-300',
+                      'relative rounded-full px-3 py-1 text-[15px] font-medium text-neutral-600 transition-all duration-150 dark:text-neutral-300',
                     )}
                     style={{
                       WebkitTapHighlightColor: 'transparent',
@@ -282,23 +325,170 @@ export default function Home() {
                   </button>
                 ))}
               </div>
-              <div className='my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-8'>
+              <div className='my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-8 lg:gap-x-12 gap-y-6 lg:gap-y-8'>
                 {filteredPortfolios.map((item, index) => (
-                  <div
+                  <PortfolioCard
+                    name={item.name}
+                    image={item.images[0]}
+                    url={item.url}
                     key={index}
-                    className='border group rounded-md border-neutral-100 dark:border-neutral-700 shadow-sm mx-0.5'
-                  >
-                    <div className='relative h-64'>
-                      <Image alt={item.name} src={item.images[0]} fill className='object-center' />
-                    </div>
-                    <div className='p-4'>
-                      <p className='font-medium group-hover:text-emerald-500 transition-all duration-150 text-left'>
-                        {item.name}
-                      </p>
-                    </div>
-                  </div>
+                    onClick={() => handleOpenPortfolio(item.name)}
+                  />
                 ))}
               </div>
+              <Transition appear show={openModal} as={Fragment}>
+                <Dialog as='div' className='relative z-[60]' onClose={() => setOpenModal(false)}>
+                  <Transition.Child
+                    as={Fragment}
+                    enter='ease-out duration-300'
+                    enterFrom='opacity-0'
+                    enterTo='opacity-100'
+                    leave='ease-in duration-200'
+                    leaveFrom='opacity-100'
+                    leaveTo='opacity-0'
+                  >
+                    <div className='fixed inset-0 bg-white/50 dark:bg-neutral-900/30 backdrop-blur-md backdrop-filter' />
+                  </Transition.Child>
+
+                  <div className='fixed inset-0 overflow-y-auto'>
+                    <div className='flex min-h-full items-center justify-center p-4 text-center'>
+                      <Transition.Child
+                        as={Fragment}
+                        enter='ease-out duration-300'
+                        enterFrom='opacity-0 scale-95'
+                        enterTo='opacity-100 scale-100'
+                        leave='ease-in duration-200'
+                        leaveFrom='opacity-100 scale-100'
+                        leaveTo='opacity-0 scale-95'
+                      >
+                        <Dialog.Panel className='w-full max-w-5xl transform overflow-hidden rounded-2xl bg-white dark:bg-neutral-800 p-4 md:p-6 text-left align-middle shadow-xl transition-all'>
+                          <div className='flex items-center justify-between flex-wrap'>
+                            <Dialog.Title
+                              as='h3'
+                              className='text-2xl font-semibold leading-6 text-gray-900 dark:text-white'
+                            >
+                              {openedPortfolio.name}
+                            </Dialog.Title>
+                            <button type='button' onClick={() => setOpenModal(false)}>
+                              <XIcon className='h-5 w-5 text-neutral-500 dark:text-neutral-200' />
+                            </button>
+                          </div>
+                          <div className='mt-6 flex flex-wrap justify-between dark:text-neutral-800'>
+                            <div className='w-full lg:w-3/5 relative'>
+                              <Swiper
+                                pagination={{
+                                  clickable: true,
+                                }}
+                                autoplay={{
+                                  delay: 2500,
+                                  disableOnInteraction: false,
+                                }}
+                                modules={[Autoplay, Navigation, Pagination]}
+                                navigation={{
+                                  prevEl,
+                                  nextEl,
+                                }}
+                                loop={true}
+                                className='w-full md:w-[80%] lg:w-full py-4'
+                              >
+                                {openedPortfolio.images?.map((item: string, index: number) => (
+                                  <SwiperSlide key={index}>
+                                    <div className='relative h-64 sm:h-96 md:h-[400px] lg:h-[450px]'>
+                                      <Image
+                                        alt={openedPortfolio.name}
+                                        src={item}
+                                        fill
+                                        className='object-cover object-top'
+                                        unoptimized
+                                      />
+                                    </div>
+                                  </SwiperSlide>
+                                ))}
+                              </Swiper>
+                              <button
+                                aria-label='Prev'
+                                ref={(node) => setPrevEl(node)}
+                                className={cn(
+                                  'absolute left-0 top-[38%] z-[70] cursor-pointer rounded-full p-2 shadow-lg transition-all sm:top-[38%] md:top-[40%] lg:top-[45%]',
+                                  'border bg-neutral-100 hover:bg-neutral-200 dark:border-neutral-800 dark:bg-black/60 dark:hover:bg-black/90',
+                                )}
+                              >
+                                <ArrowLeftIcon className='h-5 w-5 dark:text-white' />
+                              </button>
+                              <button
+                                aria-label='Next'
+                                ref={(node) => setNextEl(node)}
+                                className={cn(
+                                  'absolute right-0 top-[38%] z-[70] cursor-pointer rounded-full p-2 shadow-lg transition-all sm:top-[38%] md:top-[40%] lg:top-[45%]',
+                                  'border bg-neutral-100 hover:bg-neutral-200 dark:border-neutral-800 dark:bg-black/60 dark:hover:bg-black/90',
+                                )}
+                              >
+                                <ArrowRightIcon className='h-5 w-5 dark:text-white' />
+                              </button>
+                            </div>
+                            <div className='w-full lg:w-2/5 md:pl-8'>
+                              <h4 className='font-semibold text-xl mt-4 lg:mt-0 mb-4 text-gray-900 dark:text-white'>
+                                Project Information
+                              </h4>
+                              <table>
+                                <tr>
+                                  <td className='py-1 font-medium dark:text-neutral-200'>Category</td>
+                                  <td className='px-2 dark:text-neutral-200'>:</td>
+                                  <td className='dark:text-neutral-200'>
+                                    {openedPortfolio.category.map((item, index) => (
+                                      <span key={index}>
+                                        <span>{item.replace('d', 'D')}</span>
+                                        <span>{index < openedPortfolio.category.length - 1 && ', '}</span>
+                                      </span>
+                                    ))}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td className='py-1 font-medium dark:text-neutral-200'>Design</td>
+                                  <td className='px-2 dark:text-neutral-200'>:</td>
+                                  <td className='dark:text-neutral-200'>{openedPortfolio.design}</td>
+                                </tr>
+                                <tr>
+                                  <td className='py-1 font-medium dark:text-neutral-200'>Stack</td>
+                                  <td className='px-2 dark:text-neutral-200'>:</td>
+                                  <td className='dark:text-neutral-200'>{openedPortfolio.stack}</td>
+                                </tr>
+                                <tr>
+                                  <td className='py-1 font-medium dark:text-neutral-200'>URL</td>
+                                  <td className='px-2 dark:text-neutral-200'>:</td>
+                                  <td>
+                                    <a
+                                      target='_blank'
+                                      href={openedPortfolio.url}
+                                      className='w-16 flex gap-1 font-medium items-center text-emerald-500 hover:text-emerald-600 transition-all duration-200'
+                                    >
+                                      Open <ExternalLinkIcon className='h-3 w-3' />
+                                    </a>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td className='py-1 font-medium dark:text-neutral-200'>Github</td>
+                                  <td className='px-2 dark:text-neutral-200'>:</td>
+                                  <td>
+                                    <a
+                                      target='_blank'
+                                      href={openedPortfolio.github}
+                                      className='w-16 flex gap-1 font-medium items-center text-emerald-500 hover:text-emerald-600 transition-all duration-200'
+                                    >
+                                      Open <ExternalLinkIcon className='h-3 w-3' />
+                                    </a>
+                                  </td>
+                                </tr>
+                              </table>
+                              <p className='mt-4 dark:text-neutral-200'>{openedPortfolio.description}</p>
+                            </div>
+                          </div>
+                        </Dialog.Panel>
+                      </Transition.Child>
+                    </div>
+                  </div>
+                </Dialog>
+              </Transition>
             </section>
 
             <footer
@@ -309,38 +499,38 @@ export default function Home() {
             >
               <div className='flex items-center gap-6 mx-auto lg:mx-0'>
                 <Link
-                  href='#'
-                  className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500  dark:text-neutral-200 text-neutral-800 font-medium'
+                  href='#about'
+                  className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500 dark:text-neutral-200 text-neutral-800 font-medium'
                 >
                   About
                 </Link>
                 <Link
-                  href='#'
-                  className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500  dark:text-neutral-200 text-neutral-800 font-medium'
+                  href='#article'
+                  className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500 dark:text-neutral-200 text-neutral-800 font-medium'
                 >
                   Article
                 </Link>
                 <Link
-                  href='#'
-                  className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500  dark:text-neutral-200 text-neutral-800 font-medium'
+                  href='#projects'
+                  className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500 dark:text-neutral-200 text-neutral-800 font-medium'
                 >
                   Projects
                 </Link>
                 <Link
-                  href='#'
-                  className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500  dark:text-neutral-200 text-neutral-800 font-medium'
+                  href='#speaking'
+                  className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500 dark:text-neutral-200 text-neutral-800 font-medium'
                 >
                   Speaking
                 </Link>
                 <Link
-                  href='#'
-                  className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500  dark:text-neutral-200 text-neutral-800 font-medium'
+                  href='#uses'
+                  className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500 dark:text-neutral-200 text-neutral-800 font-medium'
                 >
                   Uses
                 </Link>
               </div>
               <p className='text-neutral-500 dark:text-neutral-400 text-sm mx-auto lg:mx-0 lg:text-right text-center'>
-                © 2024 Spencer Sharp. All rights reserved.
+                © {new Date().getFullYear()} Spotlight. All rights reserved.
               </p>
             </footer>
           </div>

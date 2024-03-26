@@ -32,3 +32,11 @@ html {
 .underline-center-animation:hover::before {
   transform: scaleX(1);
 }
+
+.swiper-pagination-bullet {
+  @apply !bg-neutral-500 !opacity-100;
+}
+
+.swiper-pagination-bullet.swiper-pagination-bullet-active {
+  @apply h-2.5 w-2.5 !bg-emerald-500;
+}
