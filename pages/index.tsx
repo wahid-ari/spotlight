@@ -1,9 +1,11 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Dialog, Popover, Transition } from '@headlessui/react';
-import { motion } from 'framer-motion';
+import useDetectScroll from '@smakss/react-scroll-direction';
+import AOS from 'aos';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -16,13 +18,17 @@ import {
   TwitterIcon,
   XIcon,
 } from 'lucide-react';
+import { ReactTyped } from 'react-typed';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'animate.css';
+import 'aos/dist/aos.css';
 
 import { portfolios } from '@/data/portfolio';
+import { tools } from '@/data/tools';
 import { cn } from '@/libs/utils';
 
 import PortfolioCard from '@/components/PortfolioCard';
@@ -40,6 +46,11 @@ function Navlink({ href, name }: { href: string; name: string }) {
 }
 
 export default function Home() {
+  useEffect(() => {
+    AOS.init();
+  }, []);
+  const { scrollDir } = useDetectScroll();
+
   let tabs = [
     { id: 'all', label: 'All' },
     { id: 'design', label: 'Design' },
@@ -101,16 +112,21 @@ export default function Home() {
 
       <div className='bg-neutral-50 dark:bg-black relative'>
         <div className='pointer-events-none absolute inset-0 flex justify-center'>
-          <div className='grid h-full w-full max-w-7xl grid-cols-3 gap-3.5 px-4'>
+          <div className='grid h-full w-full max-w-7xl grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3.5 px-4'>
             <div className='border-x border-neutral-200/50 dark:border-white/10'></div>
             <div className='border-x border-neutral-200/50 dark:border-white/10'></div>
-            <div className='border-x border-neutral-200/50 dark:border-white/10'></div>
+            <div className='border-x hidden sm:block lg:hidden xl:block border-neutral-200/50 dark:border-white/10'></div>
           </div>
         </div>
 
         <div className='flex justify-center sm:px-8 md:px-12 lg:px-16'>
           <div className='w-full min-h-screen mx-1.5 max-w-7xl bg-white ring-1 ring-neutral-100 dark:bg-neutral-900 dark:ring-neutral-300/20'>
-            <nav className='flex items-center sticky top-6 z-50 justify-between gap-4 mt-6 px-4 sm:px-16 md:px-20 lg:px-24'>
+            <nav
+              className={cn(
+                'flex items-center z-50 justify-between gap-4 mt-6 px-4 sm:px-16 md:px-20 lg:px-24',
+                scrollDir == 'up' && 'sticky top-6',
+              )}
+            >
               <Link href='/'>
                 <Image src='/icon.png' alt='logo' width={36} height={36} />
               </Link>
@@ -215,39 +231,54 @@ export default function Home() {
             </nav>
 
             <section id='about' className='z-[1] relative px-4 sm:px-16 md:px-20 lg:px-24 mt-32'>
-              <div className='max-w-2xl'>
-                <p className='text-4xl leading-[1.2] sm:leading-[1.15] font-bold tracking-tight text-neutral-800 sm:text-5xl dark:text-neutral-100'>
-                  Software designer, founder, and amateur astronaut.
-                </p>
-                <p className='mt-6 text-base text-neutral-600 dark:text-neutral-400'>
-                  I’m Spotlight, a software designer and entrepreneur based in New York City. I’m the founder and CEO of
-                  Planetaria, where we develop technologies that empower regular people to explore space on their own
-                  terms.
-                </p>
-                <div className='mt-6 flex gap-6'>
-                  <a href='mailto:wahiid.ari@gmail.com' target='_blank' aria-label='Email'>
-                    <MailIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
-                  </a>
-                  <a href='https://twitter.com/' target='_blank' aria-label='Twitter'>
-                    <TwitterIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
-                  </a>
-                  <a href='https://www.instagram.com/' target='_blank' aria-label='Instagram'>
-                    <InstagramIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
-                  </a>
-                  <a href='https://www.github.com/' target='_blank' aria-label='Github'>
-                    <GithubIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
-                  </a>
-                  <a href='https://linkedin.com/' target='_blank' aria-label='Linkedin'>
-                    <LinkedinIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
-                  </a>
-                </div>
-              </div>
+              <AnimatePresence>
+                <motion.div layout initial={{ transform: 'scale(0.9)' }} animate={{ transform: 'scale(1)' }}>
+                  <div className='max-w-2xl'>
+                    <p className='text-4xl leading-[1.2] sm:leading-[1.15] font-bold tracking-tight text-neutral-800 sm:text-5xl dark:text-neutral-100'>
+                      a{' '}
+                      <ReactTyped
+                        strings={['IT Enthusiast', 'Frontend Dev']}
+                        typeSpeed={150}
+                        backSpeed={50}
+                        loop
+                        className='text-emerald-500 italic'
+                        showCursor={false}
+                      />
+                      , founder, and amateur astronot.
+                    </p>
+
+                    <p className='mt-6 text-base text-neutral-600 dark:text-neutral-400'>
+                      I’m Spotlight, a software designer and entrepreneur based in New York City. I’m the founder and
+                      CEO of Planetaria, where we develop technologies that empower regular people to explore space on
+                      their own terms.
+                    </p>
+                    <div className='mt-6 flex gap-6'>
+                      <a href='mailto:wahiid.ari@gmail.com' target='_blank' aria-label='Email'>
+                        <MailIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
+                      </a>
+                      <a href='https://twitter.com/' target='_blank' aria-label='Twitter'>
+                        <TwitterIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
+                      </a>
+                      <a href='https://www.instagram.com/' target='_blank' aria-label='Instagram'>
+                        <InstagramIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
+                      </a>
+                      <a href='https://www.github.com/' target='_blank' aria-label='Github'>
+                        <GithubIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
+                      </a>
+                      <a href='https://linkedin.com/' target='_blank' aria-label='Linkedin'>
+                        <LinkedinIcon className='h-5 w-5 text-neutral-600 dark:text-neutral-400 dark:hover:text-emerald-500 transition-all duration-150 hover:text-emerald-500' />
+                      </a>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
             </section>
 
             <section className='mt-16 sm:mt-20 mx-0 sm:-mx-8 md:-mx-12 lg:-mx-16 2xl:-mx-40 '>
               <div className='flex justify-center gap-5 overflow-hidden py-4 sm:gap-8'>
                 <div className='relative aspect-[9/10] w-44 flex-none overflow-hidden rounded-xl bg-neutral-100 sm:w-72 sm:rounded-2xl dark:bg-neutral-800 rotate-2'>
                   <Image
+                    data-aos='flip-left'
                     src='https://images.unsplash.com/photo-1707343843598-39755549ac9a?q=80&w=720'
                     fill
                     alt='Image'
@@ -257,6 +288,8 @@ export default function Home() {
                 </div>
                 <div className='relative aspect-[9/10] w-44 flex-none overflow-hidden rounded-xl bg-neutral-100 sm:w-72 sm:rounded-2xl dark:bg-neutral-800 -rotate-2'>
                   <Image
+                    data-aos='flip-left'
+                    data-aos-duration='1000'
                     src='https://images.unsplash.com/photo-1707343844152-6d33a0bb32c3?q=80&w=720'
                     fill
                     alt='Image'
@@ -266,6 +299,8 @@ export default function Home() {
                 </div>
                 <div className='relative aspect-[9/10] w-44 flex-none overflow-hidden rounded-xl bg-neutral-100 sm:w-72 sm:rounded-2xl dark:bg-neutral-800'>
                   <Image
+                    data-aos='flip-left'
+                    data-aos-duration='2000'
                     src='https://images.unsplash.com/photo-1711117479067-584465e4466a?q=80&w=720'
                     fill
                     alt='Image'
@@ -275,6 +310,8 @@ export default function Home() {
                 </div>
                 <div className='relative aspect-[9/10] w-44 flex-none overflow-hidden rounded-xl bg-neutral-100 sm:w-72 sm:rounded-2xl dark:bg-neutral-800 rotate-2'>
                   <Image
+                    data-aos='flip-left'
+                    data-aos-duration='3000'
                     src='https://images.unsplash.com/photo-1682686580452-37f1892ee5e8?q=80&w=720'
                     fill
                     alt='Image'
@@ -284,6 +321,8 @@ export default function Home() {
                 </div>
                 <div className='relative aspect-[9/10] w-44 flex-none overflow-hidden rounded-xl bg-neutral-100 sm:w-72 sm:rounded-2xl dark:bg-neutral-800 -rotate-2'>
                   <Image
+                    data-aos='flip-left'
+                    data-aos-duration='4000'
                     src='https://images.unsplash.com/photo-1682686581220-689c34afb6ef?q=80&w=720'
                     fill
                     alt='Image'
@@ -326,15 +365,24 @@ export default function Home() {
                 ))}
               </div>
               <div className='my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-8 lg:gap-x-12 gap-y-6 lg:gap-y-8'>
-                {filteredPortfolios.map((item, index) => (
-                  <PortfolioCard
-                    name={item.name}
-                    image={item.images[0]}
-                    url={item.url}
-                    key={index}
-                    onClick={() => handleOpenPortfolio(item.name)}
-                  />
-                ))}
+                <AnimatePresence>
+                  {filteredPortfolios.map((item, index) => (
+                    <motion.div
+                      key={index}
+                      layout
+                      initial={{ transform: 'scale(0.8)' }}
+                      animate={{ transform: 'scale(1)' }}
+                    >
+                      <PortfolioCard
+                        className='animate__animated animate__fadeIn'
+                        name={item.name}
+                        image={item.images[0]}
+                        url={item.url}
+                        onClick={() => handleOpenPortfolio(item.name)}
+                      />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
               </div>
               <Transition appear show={openModal} as={Fragment}>
                 <Dialog as='div' className='relative z-[60]' onClose={() => setOpenModal(false)}>
@@ -460,7 +508,7 @@ export default function Home() {
                                     <a
                                       target='_blank'
                                       href={openedPortfolio.url}
-                                      className='w-16 flex gap-1 font-medium items-center text-emerald-500 hover:text-emerald-600 transition-all duration-200'
+                                      className='w-16 flex gap-1 items-center text-emerald-500 hover:text-emerald-600 transition-all duration-200'
                                     >
                                       Open <ExternalLinkIcon className='h-3 w-3' />
                                     </a>
@@ -473,7 +521,7 @@ export default function Home() {
                                     <a
                                       target='_blank'
                                       href={openedPortfolio.github}
-                                      className='w-16 flex gap-1 font-medium items-center text-emerald-500 hover:text-emerald-600 transition-all duration-200'
+                                      className='w-16 flex gap-1 items-center text-emerald-500 hover:text-emerald-600 transition-all duration-200'
                                     >
                                       Open <ExternalLinkIcon className='h-3 w-3' />
                                     </a>
@@ -489,6 +537,52 @@ export default function Home() {
                   </div>
                 </Dialog>
               </Transition>
+            </section>
+
+            <section id='' className='px-6 sm:px-8 md:px-12 lg:px-16 mt-32'>
+              <p className='text-2xl text-center mb-8 leading-[1.2] sm:leading-[1.15] font-bold tracking-tight text-neutral-800 sm:text-3xl dark:text-neutral-100'>
+                Tools & Platform
+              </p>
+              <div className='my-8 grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-8 lg:gap-x-12 xl:gap-x-16 gap-y-6 lg:gap-y-8'>
+                {tools.map((item, index) => (
+                  <div
+                    key={index}
+                    className='group p-4 flex flex-col border rounded-md border-neutral-100 dark:border-neutral-800 shadow-sm mx-0.5'
+                  >
+                    <div className='flex justify-center relative'>
+                      <svg
+                        className=''
+                        width='100'
+                        height='100'
+                        viewBox='0 0 600 600'
+                        xmlns='http://www.w3.org/2000/svg'
+                      >
+                        <path
+                          className='group-hover:fill-neutral-200 dark:fill-neutral-800 dark:group-hover:fill-neutral-700 transition-all duration-500'
+                          stroke='none'
+                          strokeWidth='0'
+                          fill='#f5f5f5'
+                          d='M300,521.0016835830174C376.1290562159157,517.8887921683347,466.0731472004068,529.7835943286574,510.70327084640275,468.03025145048787C554.3714126377745,407.6079735673963,508.03601936045806,328.9844924480964,491.2728898941984,256.3432110539036C474.5976632858925,184.082847569629,479.9380746630129,96.60480741107993,416.23090153303,58.64404602377083C348.86323505073057,18.502131276798302,261.93793281208167,40.57373210992963,193.5410806939664,78.93577620505333C130.42746243093433,114.334589627462,98.30271207620316,179.96522072025542,76.75703585869454,249.04625023123273C51.97151888228291,328.5150500222984,13.704378332031375,421.85034740162234,66.52175969318436,486.19268352777647C119.04800174914682,550.1803526380478,217.28368757567262,524.383925680826,300,521.0016835830174'
+                        ></path>
+                      </svg>
+                      <div className='absolute top-1/2 -translate-y-1/2'>
+                        <div className='relative w-8 h-8'>
+                          <Image alt={item.name} src={item.image} fill className='object-center object-cover' />
+                        </div>
+                      </div>
+                    </div>
+                    <a
+                      href={item.url}
+                      className='font-medium text-lg text-center dark:text-neutral-100 text-neutral-700 dark:hover:text-emerald-500 hover:text-emerald-500 transition-all duration-150'
+                    >
+                      {item.name}
+                    </a>
+                    <p className='text-center text-neutral-500 dark:text-neutral-300 text-sm mt-1'>
+                      {item.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </section>
 
             <footer

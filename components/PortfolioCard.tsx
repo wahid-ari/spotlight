@@ -5,6 +5,7 @@ import { ExternalLinkIcon, FullscreenIcon } from 'lucide-react';
 import { cn } from '@/libs/utils';
 
 type Props = {
+  className?: string;
   name: string;
   image: string;
   url: string;
@@ -12,13 +13,16 @@ type Props = {
   [props: string]: any;
 };
 
-export default function PortfolioCard({ name, image, url, onClick, ...props }: Props) {
+export default function PortfolioCard({ className, name, image, url, onClick, ...props }: Props) {
   const [isLoading, setLoading] = useState(true);
 
   return (
     <div
       {...props}
-      className='relative border group rounded-md border-neutral-100 dark:border-neutral-700 shadow-sm mx-0.5'
+      className={cn(
+        'relative border group rounded-md border-neutral-100 dark:border-neutral-700 shadow-sm mx-0.5',
+        className,
+      )}
     >
       <div className='relative h-64'>
         <Image
