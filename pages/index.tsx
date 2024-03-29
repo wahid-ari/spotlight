@@ -9,11 +9,14 @@ import { AnimatePresence, motion } from 'framer-motion';
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
+  ArrowUpRight,
   ChevronDownIcon,
+  CircleIcon,
   ExternalLinkIcon,
   GithubIcon,
   InstagramIcon,
   LinkedinIcon,
+  LinkIcon,
   MailIcon,
   TwitterIcon,
   XIcon,
@@ -28,11 +31,13 @@ import 'animate.css';
 import 'aos/dist/aos.css';
 
 import { portfolios } from '@/data/portfolio';
+import { certificates, educations, experiences } from '@/data/resume';
 import { tools } from '@/data/tools';
 import { cn } from '@/libs/utils';
 
 import PortfolioCard from '@/components/PortfolioCard';
 import ThemeChanger from '@/components/ThemeChanger';
+import ToolCard from '@/components/ToolCard';
 
 function Navlink({ href, name }: { href: string; name: string }) {
   return (
@@ -112,10 +117,11 @@ export default function Home() {
 
       <div className='bg-neutral-50 dark:bg-black relative'>
         <div className='pointer-events-none absolute inset-0 flex justify-center'>
-          <div className='grid h-full w-full max-w-7xl grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3.5 px-4'>
+          <div className='grid h-full w-full max-w-7xl grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-4 gap-3.5 px-4'>
             <div className='border-x border-neutral-200/50 dark:border-white/10'></div>
             <div className='border-x border-neutral-200/50 dark:border-white/10'></div>
             <div className='border-x hidden sm:block lg:hidden xl:block border-neutral-200/50 dark:border-white/10'></div>
+            <div className='border-x hidden xl:block border-neutral-200/50 dark:border-white/10'></div>
           </div>
         </div>
 
@@ -230,7 +236,7 @@ export default function Home() {
               </div>
             </nav>
 
-            <section id='about' className='z-[1] relative px-4 sm:px-16 md:px-20 lg:px-24 mt-32'>
+            <section id='about' className='z-[1] relative px-6 sm:px-16 md:px-20 lg:px-24 mt-32'>
               <AnimatePresence>
                 <motion.div layout initial={{ transform: 'scale(0.9)' }} animate={{ transform: 'scale(1)' }}>
                   <div className='max-w-2xl'>
@@ -333,7 +339,7 @@ export default function Home() {
               </div>
             </section>
 
-            <section id='projects' className='px-6 sm:px-8 md:px-12 lg:px-16 mt-32'>
+            <section id='projects' className='z-[1] relative px-6 sm:px-8 md:px-12 lg:px-16 mt-32'>
               <p className='text-2xl text-center mb-8 leading-[1.2] sm:leading-[1.15] font-bold tracking-tight text-neutral-800 sm:text-3xl dark:text-neutral-100'>
                 Projects
               </p>
@@ -364,7 +370,7 @@ export default function Home() {
                   </button>
                 ))}
               </div>
-              <div className='my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-8 lg:gap-x-12 gap-y-6 lg:gap-y-8'>
+              <div className='z-[1] relative my-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
                 <AnimatePresence>
                   {filteredPortfolios.map((item, index) => (
                     <motion.div
@@ -539,48 +545,207 @@ export default function Home() {
               </Transition>
             </section>
 
-            <section id='' className='px-6 sm:px-8 md:px-12 lg:px-16 mt-32'>
-              <p className='text-2xl text-center mb-8 leading-[1.2] sm:leading-[1.15] font-bold tracking-tight text-neutral-800 sm:text-3xl dark:text-neutral-100'>
-                Tools & Platform
+            <section id='' className='z-[1] relative px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 mt-32'>
+              <p className='text-2xl text-center mb-4 leading-[1.2] sm:leading-[1.15] font-bold tracking-tight text-neutral-800 sm:text-3xl dark:text-neutral-100'>
+                Resume
               </p>
-              <div className='my-8 grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-8 lg:gap-x-12 xl:gap-x-16 gap-y-6 lg:gap-y-8'>
-                {tools.map((item, index) => (
-                  <div
-                    key={index}
-                    className='group p-4 flex flex-col border rounded-md border-neutral-100 dark:border-neutral-800 shadow-sm mx-0.5'
-                  >
-                    <div className='flex justify-center relative'>
-                      <svg
-                        className=''
-                        width='100'
-                        height='100'
-                        viewBox='0 0 600 600'
-                        xmlns='http://www.w3.org/2000/svg'
-                      >
-                        <path
-                          className='group-hover:fill-neutral-200 dark:fill-neutral-800 dark:group-hover:fill-neutral-700 transition-all duration-500'
-                          stroke='none'
-                          strokeWidth='0'
-                          fill='#f5f5f5'
-                          d='M300,521.0016835830174C376.1290562159157,517.8887921683347,466.0731472004068,529.7835943286574,510.70327084640275,468.03025145048787C554.3714126377745,407.6079735673963,508.03601936045806,328.9844924480964,491.2728898941984,256.3432110539036C474.5976632858925,184.082847569629,479.9380746630129,96.60480741107993,416.23090153303,58.64404602377083C348.86323505073057,18.502131276798302,261.93793281208167,40.57373210992963,193.5410806939664,78.93577620505333C130.42746243093433,114.334589627462,98.30271207620316,179.96522072025542,76.75703585869454,249.04625023123273C51.97151888228291,328.5150500222984,13.704378332031375,421.85034740162234,66.52175969318436,486.19268352777647C119.04800174914682,550.1803526380478,217.28368757567262,524.383925680826,300,521.0016835830174'
-                        ></path>
-                      </svg>
-                      <div className='absolute top-1/2 -translate-y-1/2'>
-                        <div className='relative w-8 h-8'>
-                          <Image alt={item.name} src={item.image} fill className='object-center object-cover' />
-                        </div>
+              <div className='bg-emerald-500 h-1 b-4 mx-auto w-16 rounded'></div>
+              <div className='my-8 grid grid-cols-1 lg:grid-cols-2 gap-8'>
+                <div>
+                  <h4 className='font-semibold text-2xl pb-2'>Pendidikan</h4>
+                  {educations.map((item, index) => (
+                    <div key={index} className='my-2 flex gap-2'>
+                      <div>
+                        <h5 className='text-emerald-500 font-bold'>{item.name}</h5>
+                        <p className='font-medium my-1 dark:text-neutral-200 text-[13px]'>{item.year}</p>
+                        <p className='font-medium my-1 flex gap-1 items-center'>
+                          {item.major}{' '}
+                          <a
+                            href={item.url}
+                            title={`${item.major} - ${item.name}`}
+                            aria-label={`${item.major} - ${item.name}`}
+                            target='_blank'
+                            className='text-emerald-500'
+                          >
+                            <LinkIcon className='h-3.5 w-3.5' />
+                          </a>
+                        </p>
                       </div>
                     </div>
-                    <a
-                      href={item.url}
-                      className='font-medium text-lg text-center dark:text-neutral-100 text-neutral-700 dark:hover:text-emerald-500 hover:text-emerald-500 transition-all duration-150'
-                    >
-                      {item.name}
-                    </a>
-                    <p className='text-center text-neutral-500 dark:text-neutral-300 text-sm mt-1'>
-                      {item.description}
-                    </p>
+                  ))}
+
+                  <h4 className='font-semibold text-2xl mt-8 pb-2'>Sertifikat</h4>
+                  {certificates.map((item, index) => (
+                    <div key={index} className='my-2 flex gap-2'>
+                      <div>
+                        <h5 className='text-emerald-500 font-bold'>{item.name}</h5>
+                        <ul className='my-1 ml-4'>
+                          {item.item.map((i, j) => (
+                            <li key={j} className='list-disc my-1 text-[15px]'>
+                              <span className='flex gap-1 items-center text-neutral-700 dark:text-neutral-200'>
+                                {i.name}{' '}
+                                <a
+                                  href={i.url}
+                                  target='_blank'
+                                  title={`${i.name} - ${item.name}`}
+                                  aria-label={`${i.name} - ${item.name}`}
+                                  className='text-emerald-500'
+                                >
+                                  <LinkIcon className='h-3.5 w-3.5' />
+                                </a>
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <h4 className='font-semibold text-2xl pb-2'>Pengalaman</h4>
+                  {experiences.map((item, index) => (
+                    <div key={index} className='my-2 flex gap-2'>
+                      <div>
+                        <h5 className='text-emerald-500 font-bold'>
+                          {item.name}
+                          {item.web != '' && (
+                            <a
+                              href={item.web}
+                              title={item.name}
+                              aria-label={item.name}
+                              target='_blank'
+                              className='ml-1 text-emerald-500 inline-flex items-center gap-1'
+                            >
+                              <ArrowUpRight className='h-3.5 w-3.5' />
+                            </a>
+                          )}
+                        </h5>
+                        <p className='font-medium my-1 text-[13px] dark:text-neutral-200'>{item.year}</p>
+                        <p className='font-medium my-1 flex gap-2 items-center'>{item.position}</p>
+                        <ul className='my-1 mx-4'>
+                          {item.item.map((i, j) => (
+                            <li key={j} className='list-disc dark:text-neutral-300 my-1 text-[15px] text-neutral-700'>
+                              {i.name}{' '}
+                              <a
+                                href={i.url}
+                                title={item.name}
+                                aria-label={item.name}
+                                target='_blank'
+                                className='text-emerald-500 inline-flex items-center gap-1'
+                              >
+                                <LinkIcon className='h-3.5 w-3.5' />
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  ))}
+
+                  <h4 className='font-semibold text-2xl mt-8 pb-2'>Pelatihan</h4>
+                  <div className='my-2 flex gap-2'>
+                    <div>
+                      <h5 className='font-bold text-emerald-500'>
+                        Digital Talent Scholarship 2020{' '}
+                        <a
+                          href='https://github.com/wahidari/wahidari/blob/master/certificate/oa-dts-wahidari.pdf'
+                          target='_blank'
+                          title='DTS - 2020'
+                          aria-label='DTS - 2020'
+                          className='text-emerald-500 inline-flex items-center gap-1'
+                        >
+                          <ArrowUpRight className='h-3.5 w-3.5' />
+                        </a>
+                        , 2021{' '}
+                        <a
+                          href='https://github.com/wahidari/wahidari/blob/master/certificate/it-fundamental-wahidari.pdf'
+                          target='_blank'
+                          title='DTS - 2021'
+                          aria-label='DTS -2021'
+                          className='text-emerald-500 inline-flex items-center gap-1'
+                        >
+                          <ArrowUpRight className='h-3.5 w-3.5' />
+                        </a>
+                        & 2022{' '}
+                        <a
+                          href='https://github.com/wahidari/wahidari/blob/master/certificate/fga-it-support.pdf'
+                          target='_blank'
+                          title='DTS - 2022'
+                          aria-label='DTS - 2022'
+                          className='text-emerald-500 inline-flex items-center gap-1'
+                        >
+                          <ArrowUpRight className='h-3.5 w-3.5' />
+                        </a>
+                      </h5>
+                      <p className='my-1 text-[15px] dark:text-neutral-300 text-neutral-700'>
+                        Digital Talent Scholarship (DTS) adalah beasiswa pelatihan SDM di bidang teknologi informasi dan
+                        komunikasi.{' '}
+                        <a
+                          href='https://digitalent.kominfo.go.id/'
+                          target='_blank'
+                          title='DTS'
+                          aria-label='DTS'
+                          className='text-emerald-500 inline-flex items-center gap-1'
+                        >
+                          <LinkIcon className='h-3.5 w-3.5' />
+                        </a>
+                      </p>
+                    </div>
                   </div>
+                  <div className='my-2 flex gap-2'>
+                    <div>
+                      <h5 className='font-bold text-emerald-500'>IDCamp 2020</h5>
+                      <p className='my-1 text-[15px] dark:text-neutral-300 text-neutral-700'>
+                        Indosat Ooredoo Digital Camp adalah program beasiswa dari Indosat Ooredoo untuk developer
+                        Indonesia.{' '}
+                        <a
+                          href='https://idcamp.indosatooredoo.com/'
+                          target='_blank'
+                          title='IDCamp'
+                          aria-label='IDCamp'
+                          className='text-emerald-500 inline-flex items-center gap-1'
+                        >
+                          <LinkIcon className='h-3.5 w-3.5' />
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                  <div className='my-2 flex gap-2'>
+                    <div>
+                      <h5 className='font-bold text-emerald-500'>HacktoberFest 2019 & 2020</h5>
+                      <p className='my-1 text-[15px] dark:text-neutral-300 text-neutral-700'>
+                        Hacktoberfest adalah event dari Github dan Digitalocean, bertujuan untuk mendorong kontribusi
+                        open source.{' '}
+                        <a
+                          href='https://hacktoberfest.digitalocean.com/'
+                          target='_blank'
+                          title='Hacktoberfest'
+                          aria-label='Hacktoberfest'
+                          className='text-emerald-500 inline-flex items-center gap-1'
+                        >
+                          <LinkIcon className='h-3.5 w-3.5' />
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section id='' className='z-[1] relative px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 mt-32'>
+              <p className='text-2xl text-center mb-4 leading-[1.2] sm:leading-[1.15] font-bold tracking-tight text-neutral-800 sm:text-3xl dark:text-neutral-100'>
+                Tools & Platform
+              </p>
+              <div className='bg-emerald-500 h-1 b-4 mx-auto w-16 rounded'></div>
+              <div className='my-8 grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-3 gap-8'>
+                {tools.map((item, index) => (
+                  <ToolCard
+                    key={index}
+                    name={item.name}
+                    description={item.description}
+                    url={item.url}
+                    image={item.image}
+                  />
                 ))}
               </div>
             </section>
@@ -591,7 +756,7 @@ export default function Home() {
                 'dark:border-t-neutral-700/50 px-4 sm:px-16 md:px-20 lg:px-24 py-12 mt-16',
               )}
             >
-              <div className='flex items-center gap-6 mx-auto lg:mx-0'>
+              <div className='flex items-center gap-2 sm:gap-4 md:gap-6 mx-auto lg:mx-0'>
                 <Link
                   href='#about'
                   className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500 dark:text-neutral-200 text-neutral-800 font-medium'
