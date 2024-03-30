@@ -11,7 +11,6 @@ import {
   ArrowRightIcon,
   ArrowUpRight,
   ChevronDownIcon,
-  CircleIcon,
   ExternalLinkIcon,
   GithubIcon,
   InstagramIcon,
@@ -32,6 +31,7 @@ import 'aos/dist/aos.css';
 
 import { portfolios } from '@/data/portfolio';
 import { certificates, educations, experiences } from '@/data/resume';
+import { skills } from '@/data/skills';
 import { tools } from '@/data/tools';
 import { cn } from '@/libs/utils';
 
@@ -113,6 +113,7 @@ export default function Home() {
         <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png' />
         <meta name='msapplication-TileImage' content='/ms-icon-144x144.png' />
         <link rel='sitemap' type='application/xml' title='Sitemap' href={`/sitemap.xml`} />
+        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css' />
       </Head>
 
       <div className='bg-neutral-50 dark:bg-black relative'>
@@ -729,6 +730,23 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
+              </div>
+            </section>
+
+            <section id='' className='z-[1] relative px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 mt-32'>
+              <p className='text-2xl text-center mb-4 leading-[1.2] sm:leading-[1.15] font-bold tracking-tight text-neutral-800 sm:text-3xl dark:text-neutral-100'>
+                Skills
+              </p>
+              <div className='bg-emerald-500 h-1 b-4 mx-auto w-16 rounded'></div>
+              <div className='my-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8'>
+                {skills.map((item, index) => (
+                  <div key={index} className='flex flex-col gap-3 items-center justify-center'>
+                    <div className='rounded-xl shadow-lg border border-neutral-200/50 dark:border-neutral-700 dark:shadow-neutral-800 px-2 py-1'>
+                      <i className={cn('text-3xl text-emerald-500', item.icon)} />
+                    </div>
+                    <p className='font-medium'>{item.name}</p>
+                  </div>
+                ))}
               </div>
             </section>
 

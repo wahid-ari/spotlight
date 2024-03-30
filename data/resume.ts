@@ -40,6 +40,88 @@ export const certificates = [
       },
     ],
   },
+  {
+    name: 'FREECODECAMP',
+    item: [
+      {
+        name: 'Responsive Web Design',
+        url: 'https://www.freecodecamp.org/certification/wahidari/responsive-web-design',
+      },
+    ],
+  },
+  {
+    name: 'DICODING',
+    item: [
+      {
+        name: 'Membangun Progressive Web Apps',
+        url: 'https://www.dicoding.com/certificates/07Z6LVE2WPQR',
+      },
+      {
+        name: 'Fundamental Front-End Web Development',
+        url: 'https://www.dicoding.com/certificates/KEXL40J5WXG2',
+      },
+      {
+        name: 'Dasar Pemrograman Web',
+        url: 'https://www.dicoding.com/certificates/98XW6GJ30XM3',
+      },
+    ],
+  },
+  {
+    name: 'BUILDWITH ANGGA',
+    item: [
+      {
+        name: 'Full-Stack Website Designer',
+        url: 'https://buildwithangga.com/talent/wahidari/full-stack-web-designer',
+      },
+      {
+        name: 'Wordpress & UI/UX Design',
+        url: 'https://buildwithangga.com/talent/wahidari/wordpress-dan-uiux-design',
+      },
+      {
+        name: 'Full-Stack Web Designer: Handoff & Front-End',
+        url: 'https://buildwithangga.com/talent/wahidari/full-stack-web-designer-handoff-dan-front-end',
+      },
+    ],
+  },
+  {
+    name: 'PROGATE',
+    item: [
+      {
+        name: 'Path Pengembangan Web (Node.js)',
+        url: 'https://progate.com/path_certificate/771a5ad8qaxu5h',
+      },
+    ],
+  },
+  {
+    name: 'QWIKLABS',
+    item: [
+      {
+        name: 'Google Suite Essentials',
+        url: 'https://www.qwiklabs.com/public_profiles/2f7d5b99-9251-46c1-afe1-5bf546bde6e8',
+      },
+    ],
+  },
+  {
+    name: 'SKILL ACADEMY',
+    item: [
+      {
+        name: 'Pengembangan Web dengan Wordpress',
+        url: 'https://img-certificate.ruangguru.com/WAHIDFG8XFHGQYAJ/CERT-EFM1M4KU.jpg',
+      },
+      {
+        name: 'Pengenalan Jaringan Cisco CCNA',
+        url: 'https://img-certificate.ruangguru.com/WAHIDFG8XFHGQYAJ/CERT-R2X29Q4B.jpg',
+      },
+      {
+        name: 'Konfigurasi Cisco Router untuk CCNA',
+        url: 'https://img-certificate.ruangguru.com/WAHIDFG8XFHGQYAJ/CERT-3R4T6KDF.jpg',
+      },
+      {
+        name: 'Dasar UX Design',
+        url: 'https://img-certificate.ruangguru.com/WAHIDFG8XFHGQYAJ/CERT-FVRTM2VA.jpg',
+      },
+    ],
+  },
 ];
 
 export const experiences = [
