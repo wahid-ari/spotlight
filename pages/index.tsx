@@ -52,7 +52,9 @@ function Navlink({ href, name }: { href: string; name: string }) {
 
 export default function Home() {
   useEffect(() => {
-    AOS.init();
+    AOS.init({
+      once: true,
+    });
   }, []);
   const { scrollDir } = useDetectScroll();
 
@@ -113,7 +115,6 @@ export default function Home() {
         <link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png' />
         <meta name='msapplication-TileImage' content='/ms-icon-144x144.png' />
         <link rel='sitemap' type='application/xml' title='Sitemap' href={`/sitemap.xml`} />
-        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css' />
       </Head>
 
       <div className='bg-neutral-50 dark:bg-black relative'>
@@ -146,10 +147,10 @@ export default function Home() {
                 )}
               >
                 <Navlink href='#about' name='About' />
-                <Navlink href='#article' name='Article' />
                 <Navlink href='#projects' name='Projects' />
-                <Navlink href='#speaking' name='Speaking' />
-                <Navlink href='#uses' name='Uses' />
+                <Navlink href='#resume' name='Resume' />
+                <Navlink href='#skills' name='Skills' />
+                <Navlink href='#tools' name='Tools' />
               </div>
               <div className='flex items-center gap-4 md:gap-0'>
                 <Popover className='relative'>
@@ -196,34 +197,10 @@ export default function Home() {
                               </li>
                               <li className='py-1'>
                                 <Link
-                                  href='#article'
-                                  className='py-2 dark:hover:text-emerald-500 hover:text-emerald-500 flex rounded text-sm font-medium text-gray-900 dark:text-white transition duration-150 ease-in-out'
-                                >
-                                  Article
-                                </Link>
-                              </li>
-                              <li className='py-1'>
-                                <Link
                                   href='#projects'
                                   className='py-2 dark:hover:text-emerald-500 hover:text-emerald-500 flex rounded text-sm font-medium text-gray-900 dark:text-white transition duration-150 ease-in-out'
                                 >
                                   Projects
-                                </Link>
-                              </li>
-                              <li className='py-1'>
-                                <Link
-                                  href='#speaking'
-                                  className='py-2 dark:hover:text-emerald-500 hover:text-emerald-500 flex rounded text-sm font-medium text-gray-900 dark:text-white transition duration-150 ease-in-out'
-                                >
-                                  Speaking
-                                </Link>
-                              </li>
-                              <li className='py-1'>
-                                <Link
-                                  href='#uses'
-                                  className='py-2 dark:hover:text-emerald-500 hover:text-emerald-500 flex rounded text-sm font-medium text-gray-900 dark:text-white transition duration-150 ease-in-out'
-                                >
-                                  Uses
                                 </Link>
                               </li>
                             </ul>
@@ -237,7 +214,7 @@ export default function Home() {
               </div>
             </nav>
 
-            <section id='about' className='z-[1] relative px-6 sm:px-16 md:px-20 lg:px-24 mt-32'>
+            <section id='about' className='scroll-mt-32 z-[1] relative px-6 sm:px-16 md:px-20 lg:px-24 mt-32'>
               <AnimatePresence>
                 <motion.div layout initial={{ transform: 'scale(0.9)' }} animate={{ transform: 'scale(1)' }}>
                   <div className='max-w-2xl'>
@@ -281,7 +258,7 @@ export default function Home() {
               </AnimatePresence>
             </section>
 
-            <section className='mt-16 sm:mt-20 mx-0 sm:-mx-8 md:-mx-12 lg:-mx-16 2xl:-mx-40 '>
+            <section className='scroll-mt-24 mt-16 sm:mt-20 mx-0 sm:-mx-8 md:-mx-12 lg:-mx-16 2xl:-mx-40 '>
               <div className='flex justify-center gap-5 overflow-hidden py-4 sm:gap-8'>
                 <div className='relative aspect-[9/10] w-44 flex-none overflow-hidden rounded-xl bg-neutral-100 sm:w-72 sm:rounded-2xl dark:bg-neutral-800 rotate-2'>
                   <Image
@@ -340,7 +317,7 @@ export default function Home() {
               </div>
             </section>
 
-            <section id='projects' className='z-[1] relative px-6 sm:px-8 md:px-12 lg:px-16 mt-32'>
+            <section id='projects' className='scroll-mt-24 z-[1] relative px-6 sm:px-8 md:px-12 lg:px-16 mt-32'>
               <p className='text-2xl text-center mb-8 leading-[1.2] sm:leading-[1.15] font-bold tracking-tight text-neutral-800 sm:text-3xl dark:text-neutral-100'>
                 Projects
               </p>
@@ -546,7 +523,7 @@ export default function Home() {
               </Transition>
             </section>
 
-            <section id='' className='z-[1] relative px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 mt-32'>
+            <section id='resume' className='scroll-mt-24 z-[1] relative px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 mt-32'>
               <p className='text-2xl text-center mb-4 leading-[1.2] sm:leading-[1.15] font-bold tracking-tight text-neutral-800 sm:text-3xl dark:text-neutral-100'>
                 Resume
               </p>
@@ -733,14 +710,19 @@ export default function Home() {
               </div>
             </section>
 
-            <section id='' className='z-[1] relative px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 mt-32'>
+            <section id='skills' className='scroll-mt-24 z-[1] relative px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 mt-32'>
               <p className='text-2xl text-center mb-4 leading-[1.2] sm:leading-[1.15] font-bold tracking-tight text-neutral-800 sm:text-3xl dark:text-neutral-100'>
                 Skills
               </p>
               <div className='bg-emerald-500 h-1 b-4 mx-auto w-16 rounded'></div>
               <div className='my-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8'>
                 {skills.map((item, index) => (
-                  <div key={index} className='flex flex-col gap-3 items-center justify-center'>
+                  <div
+                    key={index}
+                    data-aos='fade-up'
+                    data-aos-duration={`${index}000`}
+                    className='flex flex-col gap-3 items-center justify-center'
+                  >
                     <div className='rounded-xl shadow-lg border border-neutral-200/50 dark:border-neutral-700 dark:shadow-neutral-800 px-2 py-1'>
                       <i className={cn('text-3xl text-emerald-500', item.icon)} />
                     </div>
@@ -750,7 +732,7 @@ export default function Home() {
               </div>
             </section>
 
-            <section id='' className='z-[1] relative px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 mt-32'>
+            <section id='tools' className='scroll-mt-24 z-[1] relative px-6 sm:px-8 md:px-12 lg:px-16 xl:px-24 mt-32'>
               <p className='text-2xl text-center mb-4 leading-[1.2] sm:leading-[1.15] font-bold tracking-tight text-neutral-800 sm:text-3xl dark:text-neutral-100'>
                 Tools & Platform
               </p>
@@ -758,6 +740,8 @@ export default function Home() {
               <div className='my-8 grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-3 gap-8'>
                 {tools.map((item, index) => (
                   <ToolCard
+                    data-aos='zoom-in'
+                    data-aos-duration={`${index}000`}
                     key={index}
                     name={item.name}
                     description={item.description}
@@ -782,28 +766,28 @@ export default function Home() {
                   About
                 </Link>
                 <Link
-                  href='#article'
-                  className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500 dark:text-neutral-200 text-neutral-800 font-medium'
-                >
-                  Article
-                </Link>
-                <Link
                   href='#projects'
                   className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500 dark:text-neutral-200 text-neutral-800 font-medium'
                 >
                   Projects
                 </Link>
                 <Link
-                  href='#speaking'
+                  href='#resume'
                   className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500 dark:text-neutral-200 text-neutral-800 font-medium'
                 >
-                  Speaking
+                  Resume
                 </Link>
                 <Link
-                  href='#uses'
+                  href='#skills'
                   className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500 dark:text-neutral-200 text-neutral-800 font-medium'
                 >
-                  Uses
+                  Skills
+                </Link>
+                <Link
+                  href='#tools'
+                  className='underline-center-animation text-sm dark:hover:text-emerald-500 hover:text-emerald-500 dark:text-neutral-200 text-neutral-800 font-medium'
+                >
+                  Tools
                 </Link>
               </div>
               <p className='text-neutral-500 dark:text-neutral-400 text-sm mx-auto lg:mx-0 lg:text-right text-center'>

@@ -56,7 +56,7 @@ export default function ToolCard({ className, name, description, image, url, ...
           `,
         }}
       />
-      <div className='flex justify-center relative'>
+      <div className='flex justify-center relative z-[1]'>
         <svg className='' width='100' height='100' viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'>
           <path
             className='group-hover:fill-neutral-200 dark:fill-neutral-800 dark:group-hover:fill-neutral-700 transition-all duration-500'
@@ -78,13 +78,15 @@ export default function ToolCard({ className, name, description, image, url, ...
           </div>
         </div>
       </div>
-      <a
-        href={url}
-        className='font-medium text-lg text-center dark:text-neutral-100 text-neutral-700 dark:hover:text-emerald-500 hover:text-emerald-500 transition-all duration-150'
-      >
-        {name}
-      </a>
-      <p className='text-center text-neutral-500 dark:text-neutral-300 text-sm mt-1'>{description}</p>
+      <div className='flex justify-center relative z-[1]'>
+        <a
+          href={url}
+          className='font-medium text-lg text-center dark:text-neutral-100 text-neutral-700 dark:hover:text-emerald-500 hover:text-emerald-500 transition-all duration-250'
+        >
+          {name}
+        </a>
+      </div>
+      <p className='text-center relative z-[1] text-neutral-500 dark:text-neutral-300 text-sm mt-1'>{description}</p>
     </div>
   );
 }
