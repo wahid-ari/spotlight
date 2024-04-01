@@ -80,6 +80,7 @@ export default function Home() {
     category: [''],
     description: '',
     url: '',
+    source: '',
     design: '',
     stack: '',
     github: '',
@@ -509,6 +510,23 @@ export default function Home() {
                                     >
                                       Open <ExternalLinkIcon className='h-3 w-3' />
                                     </a>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td className='py-1 font-medium dark:text-neutral-200'>Source</td>
+                                  <td className='px-2 dark:text-neutral-200'>:</td>
+                                  <td>
+                                    {openedPortfolio.source ? (
+                                      <a
+                                        target='_blank'
+                                        href={openedPortfolio.source}
+                                        className='w-16 flex gap-1 items-center text-emerald-500 hover:text-emerald-600 transition-all duration-200'
+                                      >
+                                        Open <ExternalLinkIcon className='h-3 w-3' />
+                                      </a>
+                                    ) : (
+                                      <span className='dark:text-neutral-200'>-</span>
+                                    )}
                                   </td>
                                 </tr>
                               </table>
