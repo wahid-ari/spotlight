@@ -7,6 +7,8 @@ import useDetectScroll from '@smakss/react-scroll-direction';
 import AOS from 'aos';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
   ArrowUpRight,
   ChevronDownIcon,
   ExternalLinkIcon,
@@ -19,6 +21,8 @@ import {
   XIcon,
 } from 'lucide-react';
 import { ReactTyped } from 'react-typed';
+import { Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -83,11 +87,15 @@ export default function Home() {
     github: '',
     images: [''],
   });
+  const [activeSlide, setActiveSlide] = useState(0);
   function handleOpenPortfolio(name: string, index: number) {
-    let filter = portfolios.filter((portfolio) => portfolio.name == name)[0];
-    setOpenedPortfolio(filter);
+    // let filter = portfolios.filter((portfolio) => portfolio.name == name)[0];
+    // setOpenedPortfolio(filter);
+    setActiveSlide(index);
     setOpenModal(true);
   }
+  const [prevEl, setPrevEl] = useState<HTMLElement | null>(null);
+  const [nextEl, setNextEl] = useState<HTMLElement | null>(null);
 
   return (
     <>
@@ -389,99 +397,134 @@ export default function Home() {
                         leaveFrom='opacity-100 scale-100'
                         leaveTo='opacity-0 scale-95'
                       >
-                        <Dialog.Panel className='w-full m-4 max-w-5xl bg-white dark:bg-neutral-800 transform overflow-hidden rounded-2xl text-left shadow-xl transition-all'>
-                          <div className='relative p-4'>
-                            <div className='flex items-center justify-between flex-wrap'>
-                              <Dialog.Title
-                                as='h3'
-                                className='text-2xl font-semibold leading-6 text-gray-900 dark:text-white'
-                              >
-                                {openedPortfolio.name}
-                              </Dialog.Title>
-                              <button type='button' onClick={() => setOpenModal(false)}>
-                                <XIcon className='h-5 w-5 text-neutral-500 dark:text-neutral-200' />
-                              </button>
-                            </div>
-                            <div className='mt-6 flex flex-wrap justify-between dark:text-neutral-800'>
-                              <div className='w-full lg:w-3/5 relative'>
-                                <ImageSwiper name={openedPortfolio.name} images={openedPortfolio.images} />
-                              </div>
-                              <div className='w-full lg:w-2/5 md:pl-8'>
-                                <h4 className='font-semibold text-xl mt-4 lg:mt-0 mb-4 text-gray-900 dark:text-white'>
-                                  Project Information
-                                </h4>
-                                <table>
-                                  <tr>
-                                    <td className='py-1 font-medium dark:text-neutral-200'>Category</td>
-                                    <td className='px-2 dark:text-neutral-200'>:</td>
-                                    <td className='dark:text-neutral-200'>
-                                      {openedPortfolio.category.map((item, index) => (
-                                        <span key={index}>
-                                          <span>{item.replace('d', 'D')}</span>
-                                          <span>{index < openedPortfolio.category.length - 1 && ', '}</span>
-                                        </span>
-                                      ))}
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td className='py-1 font-medium dark:text-neutral-200'>Design</td>
-                                    <td className='px-2 dark:text-neutral-200'>:</td>
-                                    <td className='dark:text-neutral-200'>{openedPortfolio.design}</td>
-                                  </tr>
-                                  <tr>
-                                    <td className='py-1 font-medium dark:text-neutral-200'>Stack</td>
-                                    <td className='px-2 dark:text-neutral-200'>:</td>
-                                    <td className='dark:text-neutral-200'>{openedPortfolio.stack}</td>
-                                  </tr>
-                                  <tr>
-                                    <td className='py-1 font-medium dark:text-neutral-200'>URL</td>
-                                    <td className='px-2 dark:text-neutral-200'>:</td>
-                                    <td>
-                                      <a
-                                        target='_blank'
-                                        href={openedPortfolio.url}
-                                        className='w-16 flex gap-1 items-center text-emerald-500 hover:text-emerald-600 transition-all duration-200'
-                                      >
-                                        Open <ExternalLinkIcon className='h-3 w-3' />
-                                      </a>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td className='py-1 font-medium dark:text-neutral-200'>Github</td>
-                                    <td className='px-2 dark:text-neutral-200'>:</td>
-                                    <td>
-                                      <a
-                                        target='_blank'
-                                        href={openedPortfolio.github}
-                                        className='w-16 flex gap-1 items-center text-emerald-500 hover:text-emerald-600 transition-all duration-200'
-                                      >
-                                        Open <ExternalLinkIcon className='h-3 w-3' />
-                                      </a>
-                                    </td>
-                                  </tr>
-                                  {openedPortfolio.source != '' && (
-                                    <tr>
-                                      <td className='py-1 font-medium dark:text-neutral-200'>Source</td>
-                                      <td className='px-2 dark:text-neutral-200'>:</td>
-                                      <td>
-                                        {openedPortfolio.source ? (
-                                          <a
-                                            target='_blank'
-                                            href={openedPortfolio.source}
-                                            className='w-16 flex gap-1 items-center text-emerald-500 hover:text-emerald-600 transition-all duration-200'
-                                          >
-                                            Open <ExternalLinkIcon className='h-3 w-3' />
-                                          </a>
-                                        ) : (
-                                          <span className='dark:text-neutral-200'>-</span>
+                        <Dialog.Panel className='w-full max-w-5xl'>
+                          <div className='p-4'>
+                            <Swiper
+                              modules={[Navigation]}
+                              navigation={{
+                                prevEl,
+                                nextEl,
+                              }}
+                              initialSlide={activeSlide}
+                              loop={true}
+                              className='w-full max-w-5xl lg:w-full bg-white dark:bg-neutral-800 transform overflow-hidden rounded-2xl text-left shadow-xl transition-all'
+                            >
+                              {portfolios.map((project, index) => (
+                                <SwiperSlide key={index} className='p-4 md:p-6'>
+                                  <div className='flex items-center justify-between flex-wrap'>
+                                    <Dialog.Title
+                                      as='h3'
+                                      className='text-2xl font-semibold leading-6 text-gray-900 dark:text-white'
+                                    >
+                                      {project.name}
+                                    </Dialog.Title>
+                                    <button type='button' onClick={() => setOpenModal(false)}>
+                                      <XIcon className='h-5 w-5 text-neutral-500 dark:text-neutral-200' />
+                                    </button>
+                                  </div>
+                                  <div className='mt-6 flex flex-wrap justify-between dark:text-neutral-800'>
+                                    <div className='w-full lg:w-3/5 relative'>
+                                      <ImageSwiper name={project.name} images={project.images} />
+                                    </div>
+                                    <div className='w-full lg:w-2/5 md:pl-8'>
+                                      <h4 className='font-semibold text-xl mt-4 lg:mt-0 mb-4 text-gray-900 dark:text-white'>
+                                        Project Information
+                                      </h4>
+                                      <table>
+                                        <tr>
+                                          <td className='py-1 font-medium dark:text-neutral-200'>Category</td>
+                                          <td className='px-2 dark:text-neutral-200'>:</td>
+                                          <td className='dark:text-neutral-200'>
+                                            {project.category.map((item, index) => (
+                                              <span key={index}>
+                                                <span>{item.replace('d', 'D')}</span>
+                                                <span>{index < project.category.length - 1 && ', '}</span>
+                                              </span>
+                                            ))}
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td className='py-1 font-medium dark:text-neutral-200'>Design</td>
+                                          <td className='px-2 dark:text-neutral-200'>:</td>
+                                          <td className='dark:text-neutral-200'>{project.design}</td>
+                                        </tr>
+                                        <tr>
+                                          <td className='py-1 font-medium dark:text-neutral-200'>Stack</td>
+                                          <td className='px-2 dark:text-neutral-200'>:</td>
+                                          <td className='dark:text-neutral-200'>{project.stack}</td>
+                                        </tr>
+                                        <tr>
+                                          <td className='py-1 font-medium dark:text-neutral-200'>URL</td>
+                                          <td className='px-2 dark:text-neutral-200'>:</td>
+                                          <td>
+                                            <a
+                                              target='_blank'
+                                              href={project.url}
+                                              className='w-16 flex gap-1 items-center text-emerald-500 hover:text-emerald-600 transition-all duration-200'
+                                            >
+                                              Open <ExternalLinkIcon className='h-3 w-3' />
+                                            </a>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td className='py-1 font-medium dark:text-neutral-200'>Github</td>
+                                          <td className='px-2 dark:text-neutral-200'>:</td>
+                                          <td>
+                                            <a
+                                              target='_blank'
+                                              href={project.github}
+                                              className='w-16 flex gap-1 items-center text-emerald-500 hover:text-emerald-600 transition-all duration-200'
+                                            >
+                                              Open <ExternalLinkIcon className='h-3 w-3' />
+                                            </a>
+                                          </td>
+                                        </tr>
+                                        {project.source != '' && (
+                                          <tr>
+                                            <td className='py-1 font-medium dark:text-neutral-200'>Source</td>
+                                            <td className='px-2 dark:text-neutral-200'>:</td>
+                                            <td>
+                                              {project.source ? (
+                                                <a
+                                                  target='_blank'
+                                                  href={project.source}
+                                                  className='w-16 flex gap-1 items-center text-emerald-500 hover:text-emerald-600 transition-all duration-200'
+                                                >
+                                                  Open <ExternalLinkIcon className='h-3 w-3' />
+                                                </a>
+                                              ) : (
+                                                <span className='dark:text-neutral-200'>-</span>
+                                              )}
+                                            </td>
+                                          </tr>
                                         )}
-                                      </td>
-                                    </tr>
-                                  )}
-                                </table>
-                                <p className='mt-4 dark:text-neutral-200'>{openedPortfolio.description}</p>
-                              </div>
-                            </div>
+                                      </table>
+                                      <p className='mt-4 dark:text-neutral-200'>{project.description}</p>
+                                    </div>
+                                  </div>
+                                </SwiperSlide>
+                              ))}
+                            </Swiper>
+                            <button
+                              aria-label='Prev Project'
+                              ref={(node) => setPrevEl(node)}
+                              className={cn(
+                                'absolute left-0 sm:left-2 xl:left-8 top-[38%] z-[70] cursor-pointer rounded-full p-2 shadow-lg transition-all sm:top-[38%] md:top-[40%] lg:top-[45%] xl:top-[49%]',
+                                'border bg-neutral-100 hover:bg-neutral-200 dark:border-neutral-800 dark:bg-black/60 dark:hover:bg-black/90',
+                              )}
+                            >
+                              <ArrowLeftIcon className='h-5 w-5 dark:text-white' />
+                            </button>
+                            <button
+                              aria-label='Next Project'
+                              ref={(node) => setNextEl(node)}
+                              className={cn(
+                                'absolute right-0 sm:right-2 xl:right-8 top-[38%] z-[70] cursor-pointer rounded-full p-2 shadow-lg transition-all sm:top-[38%] md:top-[40%] lg:top-[45%] xl:top-[49%]',
+                                'border bg-neutral-100 hover:bg-neutral-200 dark:border-neutral-800 dark:bg-black/60 dark:hover:bg-black/90',
+                              )}
+                            >
+                              <ArrowRightIcon className='h-5 w-5 dark:text-white' />
+                            </button>
                           </div>
                         </Dialog.Panel>
                       </Transition.Child>
